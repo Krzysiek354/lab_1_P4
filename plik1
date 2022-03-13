@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+
+namespace lab1___
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Northwind2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand komenda = new SqlCommand("SELECT * FROM dbo.[Region]",connection);
+                SqlDataReader reader = komenda.ExecuteReader();
+
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine("{0}\t{1}", reader.GetInt32(0),
+                            reader.GetString(1));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+                reader.Close();
+            }
+            Console.ReadKey();
+        }
+    }
+}
